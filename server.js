@@ -18,8 +18,8 @@ app.get("/", (req, res) => {
 
 app.post("/syncDb", async (req, res) => {
     let { connectionString1, connectionString2, dbToCopy } = req.body;
-    connectionString1 = `${connectionString1}/${dbToCopy}`;
-    connectionString2 = `${connectionString2}/${dbToCopy}`;
+    connectionString1 = `${connectionString1}/${dbToCopy}?authSource=admin`;
+    connectionString2 = `${connectionString2}/${dbToCopy}?authSource=admin`;
 
     if (!connectionString1.startsWith('mongodb') || !connectionString2.startsWith('mongodb')) return res.send({ error: "Invalid Strings" })
     try {
@@ -40,7 +40,7 @@ app.post("/syncDb", async (req, res) => {
                 item._id = item._id.toString();
                 return item
             });
-
+            console.log(i , "fetching Done", `${dataToCopy[i].length} documents fetched`)
         }
         
         for (let i in dataToCopy) {
@@ -62,8 +62,8 @@ app.post("/syncDb", async (req, res) => {
         console.log("Deletion Successful")
         for (let i in dataToCopy) {
             let temp = await connection2.db.collection(i).insertMany(dataToCopy[i]);
-            console.log(temp)
         }
+        console.log("Success")
         return res.send({ message: "Success" })
     } catch (error) {
         console.error("Error during database synchronization:", error);

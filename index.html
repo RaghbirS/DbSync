@@ -76,7 +76,7 @@
 
 <body>
     <div class="parent">
-        <h2>Database Connection Strings</h2>
+        <h2>Database Synchronizer</h2>
 
         <p>
             This software allows you to synchronize data between two MongoDB databases.
@@ -127,7 +127,7 @@
                 })
             };
 
-            fetch("http://207.180.217.57:3002/syncDb", options)
+            fetch("http://localhost:3001/syncDb", options)
                 .then(response => response.json())
                 .then(data => {
                     if (data.message == "Success") button.innerText = "Success";
@@ -146,7 +146,6 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showToast()
                     button.innerText = "Error"
                     button.style.backgroundColor = "red"
                 });
