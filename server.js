@@ -42,10 +42,11 @@ app.post("/syncDb", async (req, res) => {
             });
 
         }
+        
         for (let i in dataToCopy) {
             if (dataToCopy[i].length == 0) delete dataToCopy[i]
         }
-        // console.log(dataToCopy)
+        console.log(dataToCopy)
 
         await connection1.close();
 
@@ -58,9 +59,10 @@ app.post("/syncDb", async (req, res) => {
         for (let i of collections) {
             let temp = await connection2.db.collection(i).deleteMany({});
         }
-
+        console.log("Deletion Successful")
         for (let i in dataToCopy) {
             let temp = await connection2.db.collection(i).insertMany(dataToCopy[i]);
+            console.log(temp)
         }
         return res.send({ message: "Success" })
     } catch (error) {
