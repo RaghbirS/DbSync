@@ -63,6 +63,13 @@
             flex-direction: column;
             gap: 10px;
         }
+
+        p {
+            max-width: 600px;
+            text-align: center;
+            color: #555;
+            margin-bottom: 20px;
+        }
     </style>
 
 </head>
@@ -70,6 +77,15 @@
 <body>
     <div class="parent">
         <h2>Database Connection Strings</h2>
+
+        <p>
+            This software allows you to synchronize data between two MongoDB databases. 
+            Enter the connection strings for both databases and specify the database name to copy data from. 
+            The synchronization process involves copying data from the source database to the destination database. 
+            It first retrieves the data from the source, deletes all existing data in the destination, 
+            and then inserts the copied data into the destination database.
+        </p>
+
         <form id="connectionForm">
             <label for="connectionString1">Database Connection String One:</label>
             <input type="text" id="connectionString1" name="connectionString1" required>
@@ -82,7 +98,7 @@
             <button type="button" onclick="synchronizeDatabases()">Synchronize</button>
 
         </form>
-        <p></p>
+        <p id="pppp"></p>
     </div>
 
 
@@ -93,7 +109,7 @@
             var connectionString2 = document.getElementById('connectionString2').value;
             var Dbname = document.getElementById('Dbname').value;
             var button = document.querySelector('button');
-            var p = document.querySelector('p');
+            var p = document.querySelector('#pppp');
             p.innerText = "";
             p.style.color = "black"
             button.innerText = "Loading..."
