@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Synchronization</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .parent {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="parent">
+        <h2>Database Connection Strings</h2>
+        <form id="connectionForm">
+            <label for="connectionString1">Database Connection String One:</label>
+            <input type="text" id="connectionString1" name="connectionString1" required>
+
+            <label for="connectionString2">Database Connection String Two:</label>
+            <input type="text" id="connectionString2" name="connectionString2" required>
+
+            <label for="Dbname">Database To Sync ( Database Name )</label>
+            <input type="text" id="Dbname" name="Dbname" required>
+            <button type="button" onclick="synchronizeDatabases()">Synchronize</button>
+
+        </form>
+        <p></p>
+    </div>
+
+
+    <script>
+        async function synchronizeDatabases() {
+
+            var connectionString1 = document.getElementById('connectionString1').value;
+            var connectionString2 = document.getElementById('connectionString2').value;
+            var Dbname = document.getElementById('Dbname').value;
+            var button = document.querySelector('button');
+            var p = document.querySelector('p');
+            p.innerText = "";
+            p.style.color = "black"
+            button.innerText = "Loading..."
+            console.log('Synchronizing databases...');
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    connectionString1: connectionString1,
+                    connectionString2: connectionString2,
+                    dbToCopy: Dbname
+                })
+            };
+
+            fetch("http://localhost:3001/syncDb", options)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message == "Success") button.innerText = "Success";
+                    if (data.error) {
+                        button.innerText = "Error"
+                        button.style.backgroundColor = "red"
+                        p.innerText = data.error;
+                        p.style.color = "red"
+                        setTimeout(() => {
+                            button.innerText = "Synchronize"
+                            button.style.backgroundColor = "#4070f4"
+                        }, 3000)
+                    }
+                    console.log('Response:', data);
+                    // Handle the response data here
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast()
+                    button.innerText = "Error"
+                    button.style.backgroundColor = "red"
+                });
+        }
+    </script>
+
+</body>
+
+</html>
