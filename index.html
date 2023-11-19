@@ -79,10 +79,10 @@
         <h2>Database Connection Strings</h2>
 
         <p>
-            This software allows you to synchronize data between two MongoDB databases. 
-            Enter the connection strings for both databases and specify the database name to copy data from. 
-            The synchronization process involves copying data from the source database to the destination database. 
-            It first retrieves the data from the source, deletes all existing data in the destination, 
+            This software allows you to synchronize data between two MongoDB databases.
+            Enter the connection strings for both databases and specify the database name to copy data from.
+            The synchronization process involves copying data from the source database to the destination database.
+            It first retrieves the data from the source, deletes all existing data in the destination,
             and then inserts the copied data into the destination database.
         </p>
 
@@ -127,7 +127,7 @@
                 })
             };
 
-            fetch("http://localhost:3001/syncDb", options)
+            fetch("http://207.180.217.57:3002/syncDb", options)
                 .then(response => response.json())
                 .then(data => {
                     if (data.message == "Success") button.innerText = "Success";
