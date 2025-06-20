@@ -127,7 +127,7 @@
                 })
             };
 
-            fetch("http://207.180.217.57:3002/syncDb", options)
+            fetch("https://dbsync.onrender.com/syncDb", options)
                 .then(response => response.json())
                 .then(data => {
                     if (data.message == "Success") button.innerText = "Success";
