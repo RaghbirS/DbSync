@@ -37,7 +37,7 @@ app.post("/syncDb", async (req, res) => {
 
         for (let i of collections) {
             dataToCopy[i] = (await connection1.db.collection(i).find().toArray()).map(item => {
-                item._id = item._id.toString();
+                item._id = item._id
                 return item
             });
             console.log(i , "fetching Done", `${dataToCopy[i].length} documents fetched`)
