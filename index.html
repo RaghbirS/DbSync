@@ -127,14 +127,20 @@
                 })
             };
 
-            fetch("https://dbsync.onrender.com/syncDb", options)
-                .then(response => response.json())
+            fetch("http://localhost:3001/syncDb", options)
+                .then(async (response) => {
+                    const text = await response.text();
+                    let data;
+                    try { data = JSON.parse(text); } catch { data = { error: text || "Unknown error" }; }
+                    if (!response.ok && !data.error) data.error = "Request failed";
+                    return data;
+                })
                 .then(data => {
                     if (data.message == "Success") button.innerText = "Success";
                     if (data.error) {
                         button.innerText = "Error"
                         button.style.backgroundColor = "red"
-                        p.innerText = data.error;
+                        p.innerText = data.details ? `${data.error}: ${data.details}` : data.error;
                         p.style.color = "red"
                         setTimeout(() => {
                             button.innerText = "Synchronize"
